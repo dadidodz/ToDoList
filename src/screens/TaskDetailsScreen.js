@@ -44,7 +44,7 @@ const TaskDetailsScreen = ({ route }) => {
                 value={newDescription}
                 onChangeText={setNewDescription}
                 style={styles.input}
-                maxLength={50}
+                maxLength={200}
               />
               <Button mode="contained" onPress={handleEditTask} style={styles.button}>Enregistrer</Button>
             </>

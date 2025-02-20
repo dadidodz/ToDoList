@@ -27,12 +27,14 @@ const AddTaskModal = ({ visible, onClose }) => {
             value={title}
             onChangeText={setTitle}
             style={styles.input}
+            maxLength={50}
           />
           <TextInput
             label="Description"
             value={description}
             onChangeText={setDescription}
             style={styles.input}
+            maxLength={50}
           />
           <Button mode="contained" onPress={handleAddTask} style={styles.button}>Créer</Button>
           <Button onPress={onClose}>Annuler</Button>

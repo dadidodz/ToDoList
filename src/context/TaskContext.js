@@ -37,7 +37,8 @@ export const TaskProvider = ({ children }) => {
       status: 'Todo',
       createdAt: new Date().toISOString(), 
       inProgressAt: null,
-      completedAt: null };
+      completedAt: null 
+    };
     const updatedTasks = [...tasks, newTask];
     setTasks(updatedTasks);
     saveTasks(updatedTasks);
@@ -78,8 +79,18 @@ export const TaskProvider = ({ children }) => {
     );
   };
 
+  const togglePinTask = (taskId) => {
+    setTasks((prevTasks) => {
+      return prevTasks.map(task => ({
+        ...task,
+        pinned: task.id === taskId ? !task.pinned : false // Une seule tâche peut être épinglée
+      }));
+    });
+  };
+  
+
   return (
-    <TaskContext.Provider value={{ tasks, addTask, deleteTask, updateTaskStatus, editTask }}>
+    <TaskContext.Provider value={{ tasks, addTask, deleteTask, updateTaskStatus, editTask, togglePinTask }}>
       {children}
     </TaskContext.Provider>
   );

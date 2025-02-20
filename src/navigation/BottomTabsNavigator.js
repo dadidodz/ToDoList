@@ -30,7 +30,7 @@ const BottomTabsNavigator = () => {
         name="Done" 
         component={DoneScreen} 
         options={{
-          tabBarLabel: 'Terminé',
+          tabBarLabel: 'Terminées',
           tabBarIcon: ({ color }) => <MaterialCommunityIcons name="check-circle" color={color} size={26} />,
         }} 
       />

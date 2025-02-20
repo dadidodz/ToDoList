@@ -32,8 +32,20 @@ const TaskDetailsScreen = ({ route }) => {
         <Card.Content>
           {isEditing ? (
             <>
-              <TextInput label="Titre" value={newTitle} onChangeText={setNewTitle} style={styles.input} />
-              <TextInput label="Description" value={newDescription} onChangeText={setNewDescription} style={styles.input} />
+              <TextInput 
+                label="Titre"
+                value={newTitle} 
+                onChangeText={setNewTitle} 
+                style={styles.input} 
+                maxLength={50}
+              />
+              <TextInput
+                label="Description"
+                value={newDescription}
+                onChangeText={setNewDescription}
+                style={styles.input}
+                maxLength={50}
+              />
               <Button mode="contained" onPress={handleEditTask} style={styles.button}>Enregistrer</Button>
             </>
           ) : (

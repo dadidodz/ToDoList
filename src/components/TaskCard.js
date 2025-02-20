@@ -3,8 +3,10 @@ import { StyleSheet, View, Modal } from 'react-native';
 import { Card, Text, Button, IconButton } from 'react-native-paper';
 import { TaskContext } from '../context/TaskContext';
 
+
 const TaskCard = ({ task, navigation }) => {
-  const { deleteTask } = useContext(TaskContext);
+  const { deleteTask, togglePinTask } = useContext(TaskContext);
+
   const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
 
   const openDeleteModal = () => {
@@ -43,11 +45,20 @@ const TaskCard = ({ task, navigation }) => {
           right={() => (
             <View style={styles.iconsContainer}>
               <IconButton 
+                style={styles.iconsButton}
                 icon="eye" 
                 size={24} 
                 onPress={() => navigation.navigate('TaskDetails', { task })} 
               />
               <IconButton 
+                style={styles.iconsButton}
+                icon={task.pinned ? "pin" : "pin-outline"} 
+                size={24} 
+                onPress={() => togglePinTask(task.id)} 
+                iconColor={task.pinned ? "red" : "gray"} 
+              />
+              <IconButton 
+                style={styles.iconsButton}
                 icon="close" 
                 size={24} 
                 onPress={openDeleteModal} 
@@ -62,7 +73,7 @@ const TaskCard = ({ task, navigation }) => {
           )}
           
           {task.status === 'InProgress' && task.inProgressAt && (
-            <Text style={styles.dateText}>En cours depuis : {new Date(task.inProgressAt).toLocaleDateString('fr-FR')}</Text>
+            <Text style={styles.dateText}>En cours depuis le : {new Date(task.inProgressAt).toLocaleDateString('fr-FR')}</Text>
           )}
 
           {task.status === 'Done' && task.completedAt && (
@@ -82,7 +93,7 @@ const TaskCard = ({ task, navigation }) => {
               <Text style={styles.modalTitle}>Êtes-vous sûr de vouloir supprimer cette tâche ?</Text>
               <View style={styles.modalActions}>
                 <Button mode="outlined" onPress={closeDeleteModal}>Annuler</Button>
-                <Button mode="contained" onPress={handleDelete}>Supprimer</Button>
+                <Button style={styles.deleteButton} mode="contained" onPress={handleDelete}>Supprimer</Button>
               </View>
             </View>
           </View>
@@ -112,7 +123,7 @@ const styles = StyleSheet.create({
   title: {
     paddingTop: 10,
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: 18,
   },
   iconButton: {
     marginLeft: 'auto',
@@ -156,6 +167,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     width: '100%',
   },
+  deleteButton: {
+    backgroundColor: 'red',
+  },
+  iconsButton: {
+    padding: 0,
+    margin: 0,
+  },
+  
 });
 
 export default TaskCard;

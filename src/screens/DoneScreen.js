@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
-import { Text, TextInput, Button, IconButton } from 'react-native-paper';
+import { Text, IconButton } from 'react-native-paper';
 import { TaskContext } from '../context/TaskContext';
 import TaskCard from '../components/TaskCard';
 import AddTaskModal from '../components/AddTaskModal';
@@ -12,6 +12,7 @@ const DoneScreen = ({ navigation }) => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
+      title: "Tâches terminées",
       headerRight: () => (
         <IconButton icon="plus" size={28} onPress={() => setModalVisible(true)} />
       ),
@@ -35,10 +36,13 @@ const DoneScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: 10,
   },
   scrollContent: {
-    paddingBottom: 20,
+    paddingTop : 5,
+    paddingRight : 5,
+    paddingBottom : 15,
+    paddingLeft : 5,
   },
   emptyText: {
     fontStyle: 'italic',

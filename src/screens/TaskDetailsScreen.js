@@ -1,12 +1,11 @@
 import React, { useContext, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text, Card, Button, Menu, Divider, TextInput } from 'react-native-paper';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, Card, Button, Menu, Divider, TextInput, IconButton } from 'react-native-paper';
 import { TaskContext } from '../context/TaskContext';
 
-const TaskDetailsScreen = ({ route, navigation }) => {
+const TaskDetailsScreen = ({ route }) => {
   const { task } = route.params;
-  const { deleteTask, updateTaskStatus, editTask } = useContext(TaskContext);
-
+  const { updateTaskStatus, editTask } = useContext(TaskContext);
   const [isEditing, setIsEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(task.title);
   const [newDescription, setNewDescription] = useState(task.description);
@@ -39,18 +38,29 @@ const TaskDetailsScreen = ({ route, navigation }) => {
             </>
           ) : (
             <>
-              <Text style={styles.title}>{newTitle}</Text>
-              <Text>{newDescription}</Text>
+              <Text style={styles.title}>Titre : <Text style={styles.titleText}>{newTitle}</Text></Text>
+              <Text style={styles.label}>Description :</Text>
+              <View style={styles.descriptionBox}>
+                <Text style={styles.description}>{newDescription}</Text>
+              </View>
 
               <Text style={styles.label}>Statut :</Text>
               <Menu
                 visible={menuVisible}
                 onDismiss={closeMenu}
                 anchor={
-                  <Button mode="outlined" onPress={openMenu}>
-                    {status === 'Todo' ? 'À faire' : status === 'InProgress' ? 'En cours' : 'Terminé'}
-                  </Button>
-                }>
+                  <TouchableOpacity onPress={openMenu} style={styles.dropdown}>
+                    <Text>{status === 'Todo' ? 'À faire' : status === 'InProgress' ? 'En cours' : 'Terminé'}</Text>
+                    <IconButton 
+                      icon="chevron-down" 
+                      size={20} 
+                      style={styles.iconButton} 
+                      onPress={openMenu} 
+                    />
+                  </TouchableOpacity>
+                }
+                style={styles.menu}
+              >
                 <Menu.Item onPress={() => handleStatusChange('Todo')} title="À faire" />
                 <Divider />
                 <Menu.Item onPress={() => handleStatusChange('InProgress')} title="En cours" />
@@ -61,7 +71,6 @@ const TaskDetailsScreen = ({ route, navigation }) => {
           )}
         </Card.Content>
         <Card.Actions>
-          <Button onPress={() => deleteTask(task.id) && navigation.goBack()}>Supprimer</Button>
           <Button onPress={() => setIsEditing(!isEditing)}>
             {isEditing ? 'Annuler' : 'Modifier'}
           </Button>
@@ -79,6 +88,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
+  },
+  titleText: {
+    fontSize: 18,
     marginBottom: 10,
   },
   label: {
@@ -91,6 +103,36 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 10,
+  },
+  iconButton: {
+    marginLeft: 'auto',
+  },
+  menu: {
+    marginTop: 100,
+    marginLeft: 0,
+    borderRadius: 8,
+    backgroundColor: '#ffffff', 
+    elevation: 5,
+  },
+  dropdown: {
+    flexDirection: 'row',
+    borderWidth: 1,
+    borderColor: '#ccc',
+    paddingLeft : 10,
+    borderRadius: 5,
+    marginTop: 5,
+    backgroundColor: '#f9f9f9',
+    alignItems: 'center',
+    height: 40,
+  },
+  descriptionBox: {
+    borderLeftWidth: 3, 
+    borderColor: "lightgrey", 
+    padding: 5,
+  },
+  description: {
+    fontSize: 15,
+    color: '#666',
   },
 });
 

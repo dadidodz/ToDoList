@@ -1,22 +1,11 @@
 import React, { useContext, useState } from 'react';
-import { StyleSheet, TouchableOpacity, View, Modal } from 'react-native';
-import { Card, Text, Button, Menu, Divider, IconButton } from 'react-native-paper';
+import { StyleSheet, View, Modal } from 'react-native';
+import { Card, Text, Button, IconButton } from 'react-native-paper';
 import { TaskContext } from '../context/TaskContext';
 
 const TaskCard = ({ task, navigation }) => {
-  const { deleteTask, updateTaskStatus } = useContext(TaskContext);
-  const [menuVisible, setMenuVisible] = useState(false);
-  const [status, setStatus] = useState(task.status);
+  const { deleteTask } = useContext(TaskContext);
   const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
-
-  const openMenu = () => setMenuVisible(true);
-  const closeMenu = () => setMenuVisible(false);
-
-  const handleStatusChange = (newStatus) => {
-    setStatus(newStatus);
-    updateTaskStatus(task.id, newStatus);
-    closeMenu();
-  };
 
   const openDeleteModal = () => {
     setDeleteModalVisible(true);
@@ -31,120 +20,120 @@ const TaskCard = ({ task, navigation }) => {
     setDeleteModalVisible(false);
   };
 
-  return (
-    <Card style={styles.card}>
-      <Card.Title 
-        title={task.title} 
-        titleStyle={styles.title} 
-        style={styles.cardTitle}
-      />
-      <Card.Content>
-        <Text style={styles.label}>Description :</Text>
-        <View style={styles.descriptionBox}>
-          <Text style={styles.description}>{task.description}</Text>
-        </View>
-        <Text style={styles.label}>Statut :</Text>
-        <Menu
-          visible={menuVisible}
-          onDismiss={closeMenu}
-          anchor={
-            <TouchableOpacity onPress={openMenu} style={styles.dropdown}>
-              <Text>{status === 'Todo' ? 'À faire' : status === 'InProgress' ? 'En cours' : 'Terminé'}</Text>
-              <IconButton 
-                icon="chevron-down" 
-                size={20} 
-                style={styles.iconButton} 
-                onPress={openMenu} 
-              />
-            </TouchableOpacity>
-          }
-          style={styles.menu}
-        >
-          <Menu.Item onPress={() => handleStatusChange('Todo')} title="À faire" />
-          <Divider />
-          <Menu.Item onPress={() => handleStatusChange('InProgress')} title="En cours" />
-          <Divider />
-          <Menu.Item onPress={() => handleStatusChange('Done')} title="Terminé" />
-        </Menu>
-      </Card.Content>
-      <Card.Actions>
-        <Button onPress={() => navigation.navigate('TaskDetails', { task })}>Voir</Button>
-        <Button 
-          style={{ backgroundColor: '#FF6347' }} 
-          onPress={openDeleteModal}
-        >
-          Supprimer
-        </Button>
-      </Card.Actions>
+  const getStatusColor = () => {
+    switch (task.status) {
+      case "Todo":
+        return "#1a0da3";
+      case "InProgress":
+        return "#c8db1f";
+      case "Done":
+        return "green";
+      default:
+        return "gray";
+    }
+  };
 
-      {/* Modal de confirmation */}
-      <Modal 
-        visible={isDeleteModalVisible} 
-        animationType="fade"
-        transparent
-        onRequestClose={closeDeleteModal}
-      >
-        <View style={styles.modalBackground}>
-          <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>Êtes-vous sûr de vouloir supprimer cette tâche ?</Text>
-            <View style={styles.modalActions}>
-              <Button mode="outlined" onPress={closeDeleteModal}>Annuler</Button>
-              <Button mode="contained" onPress={handleDelete}>Supprimer</Button>
+  return (
+    <View style={[styles.cardContainer,  { borderLeftColor: getStatusColor() }]}>
+      <Card style={styles.card}>
+        <Card.Title 
+          title={task.title} 
+          titleStyle={styles.title} 
+          style={styles.cardTitle}
+          right={() => (
+            <View style={styles.iconsContainer}>
+              <IconButton 
+                icon="eye" 
+                size={24} 
+                onPress={() => navigation.navigate('TaskDetails', { task })} 
+              />
+              <IconButton 
+                icon="close" 
+                size={24} 
+                onPress={openDeleteModal} 
+                iconColor="#FF6347"
+              />
+            </View>
+          )}
+        />
+        <Card.Content>
+          {task.status === 'Todo' && (
+            <Text style={styles.dateText}>Créée le : {new Date(task.createdAt).toLocaleDateString('fr-FR')}</Text>
+          )}
+          
+          {task.status === 'InProgress' && task.inProgressAt && (
+            <Text style={styles.dateText}>En cours depuis : {new Date(task.inProgressAt).toLocaleDateString('fr-FR')}</Text>
+          )}
+
+          {task.status === 'Done' && task.completedAt && (
+            <Text style={styles.dateText}>Terminée le : {new Date(task.completedAt).toLocaleDateString('fr-FR')}</Text>
+          )}
+        </Card.Content>
+
+
+        <Modal 
+          visible={isDeleteModalVisible} 
+          animationType="fade"
+          transparent
+          onRequestClose={closeDeleteModal}
+        >
+          <View style={styles.modalBackground}>
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalTitle}>Êtes-vous sûr de vouloir supprimer cette tâche ?</Text>
+              <View style={styles.modalActions}>
+                <Button mode="outlined" onPress={closeDeleteModal}>Annuler</Button>
+                <Button mode="contained" onPress={handleDelete}>Supprimer</Button>
+              </View>
             </View>
           </View>
-        </View>
-      </Modal>
-    </Card>
+        </Modal>
+      </Card>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  iconsContainer: {
+    flexDirection: 'row', 
+    alignItems: 'center',
+    marginRight: 0,
+  },
   card: {
-    marginBottom: 10,
-    padding: 10,
+    flex: 1,
+    paddingLeft: 5,
+    paddingRight: 5,
+    paddingTop: 10,
+    paddingBottom: 10,
+    backgroundColor: "white",
+    elevation: 3,
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0
   },
   title: {
     paddingTop: 10,
     fontWeight: 'bold',
-    fontSize: 30,
-  },
-  label: {
-    marginTop: 10,
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  dropdown: {
-    flexDirection: 'row',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    paddingLeft : 10,
-    borderRadius: 5,
-    marginTop: 5,
-    backgroundColor: '#f9f9f9',
-    alignItems: 'center',
-    height: 40,
+    fontSize: 20,
   },
   iconButton: {
     marginLeft: 'auto',
   },
-  descriptionBox: {
-    borderLeftWidth: 3, 
-    borderColor: "lightgrey", 
-    padding: 5,
-  },
-  description: {
-    fontSize: 14,
-    color: '#666',
-  },
   menu: {
-    marginTop: 50,
+    marginTop: 100,
     marginLeft: 0,
     borderRadius: 8,
     backgroundColor: '#ffffff', 
     elevation: 5,
   },
+  cardContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "transparent",
+    borderLeftWidth: 8,
+    borderRadius: 8,
+    marginBottom: 10,
+    padding : 0
 
-  // Styles pour le modal de confirmation
+  },
   modalBackground: {
     flex: 1,
     justifyContent: 'center',

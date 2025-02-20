@@ -1,16 +1,14 @@
-// AddTaskModal.js
 import React, { useState, useContext } from 'react';
 import { Modal, View, StyleSheet } from 'react-native';
-import { Text, TextInput, Button, IconButton } from 'react-native-paper';
+import { Text, TextInput, Button } from 'react-native-paper';
 import { TaskContext } from '../context/TaskContext';
 
 const AddTaskModal = ({ visible, onClose }) => {
   const { addTask } = useContext(TaskContext);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [modalVisible, setModalVisible] = useState(false);
 
-    const handleAddTask = () => {
+  const handleAddTask = () => {
     if (title.trim() && description.trim()) {
       addTask(title, description);
       setTitle('');
@@ -36,9 +34,7 @@ const AddTaskModal = ({ visible, onClose }) => {
             onChangeText={setDescription}
             style={styles.input}
           />
-          <Button mode="contained" onPress={handleAddTask} style={styles.button}>
-            Ajouter
-          </Button>
+          <Button mode="contained" onPress={handleAddTask} style={styles.button}>Créer</Button>
           <Button onPress={onClose}>Annuler</Button>
         </View>
       </View>
@@ -69,6 +65,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   button: {
+    marginTop: 10,
     marginBottom: 10,
   },
 });

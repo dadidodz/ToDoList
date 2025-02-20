@@ -30,7 +30,14 @@ export const TaskProvider = ({ children }) => {
   };
 
   const addTask = (title, description) => {
-    const newTask = { id: Date.now().toString(), title, description, status: 'Todo' };
+    const newTask = {
+      id: Date.now().toString(),
+      title,
+      description,
+      status: 'Todo',
+      createdAt: new Date().toISOString(), 
+      inProgressAt: null,
+      completedAt: null };
     const updatedTasks = [...tasks, newTask];
     setTasks(updatedTasks);
     saveTasks(updatedTasks);
@@ -42,20 +49,33 @@ export const TaskProvider = ({ children }) => {
     saveTasks(updatedTasks);
   };
 
-  const updateTaskStatus = (taskId, newStatus) => {
-    const updatedTasks = tasks.map(task =>
-      task.id === taskId ? { ...task, status: newStatus } : task
-    );
-    setTasks(updatedTasks);
-    saveTasks(updatedTasks);
-  };
-
   const editTask = (taskId, newTitle, newDescription) => {
     const updatedTasks = tasks.map(task =>
       task.id === taskId ? { ...task, title: newTitle, description: newDescription } : task
     );
     setTasks(updatedTasks);
     saveTasks(updatedTasks);
+  };
+
+  const updateTaskStatus = (taskId, newStatus) => {
+    setTasks(prevTasks =>
+      prevTasks.map(task => {
+        if (task.id === taskId) {
+          let updatedFields = {};
+  
+          if (newStatus === 'InProgress' && !task.inProgressAt) {
+            updatedFields.inProgressAt = new Date().toISOString();
+          }
+  
+          if (newStatus === 'Done' && !task.completedAt) {
+            updatedFields.completedAt = new Date().toISOString();
+          }
+  
+          return { ...task, status: newStatus, ...updatedFields };
+        }
+        return task;
+      })
+    );
   };
 
   return (

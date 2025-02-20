@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
   },
   menu: {
-    marginTop: 100,
+    marginTop: 50,
     marginLeft: 0,
     borderRadius: 8,
     backgroundColor: '#ffffff', 

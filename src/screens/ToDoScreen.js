@@ -7,7 +7,6 @@ import AddTaskModal from '../components/AddTaskModal';
 
 const ToDoScreen = ({ navigation }) => {
   const { tasks } = useContext(TaskContext);
-  // const filteredTasks = tasks.filter(task => task.status === 'Todo');
   const filteredTasks = tasks
   .filter(task => task.status === 'Todo')
   .sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));

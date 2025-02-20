@@ -27,7 +27,7 @@ const TaskCard = ({ task, navigation }) => {
       case "Todo":
         return "#1a0da3";
       case "InProgress":
-        return "#c8db1f";
+        return "#d9640b";
       case "Done":
         return "green";
       default:
@@ -80,8 +80,6 @@ const TaskCard = ({ task, navigation }) => {
             <Text style={styles.dateText}>Terminée le : {new Date(task.completedAt).toLocaleDateString('fr-FR')}</Text>
           )}
         </Card.Content>
-
-
         <Modal 
           visible={isDeleteModalVisible} 
           animationType="fade"
@@ -128,13 +126,6 @@ const styles = StyleSheet.create({
   iconButton: {
     marginLeft: 'auto',
   },
-  menu: {
-    marginTop: 100,
-    marginLeft: 0,
-    borderRadius: 8,
-    backgroundColor: '#ffffff', 
-    elevation: 5,
-  },
   cardContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -143,7 +134,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 10,
     padding : 0
-
   },
   modalBackground: {
     flex: 1,

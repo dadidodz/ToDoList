@@ -64,5 +64,5 @@ En cliquant sur l'icône de punaise <img src="assets/images/EmptyPinButton.png" 
 
 ## Demo
 
-Insert gif or link to demo
+[Testez-la vous même](https://expo.dev/accounts/dadidodz/projects/ToDoList/updates/38bb3f15-ee24-4815-a102-b88552f21362)
 

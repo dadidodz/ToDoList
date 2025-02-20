@@ -23,6 +23,18 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "018533c2-3c29-4f5f-b712-d972ed9409a0"
+      }
+    },
+    "owner": "dadidodz",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/018533c2-3c29-4f5f-b712-d972ed9409a0"
     }
   }
 }

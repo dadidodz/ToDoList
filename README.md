@@ -64,5 +64,5 @@ En cliquant sur l'icône de punaise <img src="assets/images/EmptyPinButton.png" 
 
 ## Demo
 
-[Testez-la vous même](https://expo.dev/accounts/dadidodz/projects/ToDoList/updates/7b5979a7-585c-42ea-b294-e8bb22d49615)
+[Testez-la vous même](https://expo.dev/accounts/dadidodz/projects/ToDoList/updates/8bcfb440-5583-4a7a-bb22-8580a5081ddd)
 

@@ -7,7 +7,9 @@ import AddTaskModal from '../components/AddTaskModal';
 
 const InProgressScreen = ({ navigation }) => {
   const { tasks } = useContext(TaskContext);
-  const filteredTasks = tasks.filter(task => task.status === 'InProgress');
+  const filteredTasks = tasks
+  .filter(task => task.status === 'InProgress')
+  .sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));
   const [modalVisible, setModalVisible] = useState(false);
 
   React.useLayoutEffect(() => {

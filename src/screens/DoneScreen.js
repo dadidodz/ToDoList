@@ -7,7 +7,9 @@ import AddTaskModal from '../components/AddTaskModal';
 
 const DoneScreen = ({ navigation }) => {
   const { tasks } = useContext(TaskContext);
-  const filteredTasks = tasks.filter(task => task.status === 'Done');
+  const filteredTasks = tasks
+  .filter(task => task.status === 'Done')
+  .sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));
   const [modalVisible, setModalVisible] = useState(false);
 
   React.useLayoutEffect(() => {

@@ -83,7 +83,7 @@ export const TaskProvider = ({ children }) => {
     setTasks((prevTasks) => {
       return prevTasks.map(task => ({
         ...task,
-        pinned: task.id === taskId ? !task.pinned : false // Une seule tâche peut être épinglée
+        pinned: task.id === taskId ? !task.pinned : false
       }));
     });
   };
